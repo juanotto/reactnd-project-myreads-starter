@@ -2,16 +2,10 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Shelf from './components/Shelf'
+import { Switch, Route, withRouter } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
     books: {
       current: [{
           title: 'To Kill a Mockingbird',
@@ -51,59 +45,72 @@ class BooksApp extends React.Component {
     },
   }
 
+  goToSearch = () => {
+    this.props.history.push('/search');
+  }
+
+  goToHome = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+        <Switch>
+          <Route path="/" exact>
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                  <Shelf
+                    shelfTitle={'Currently Reading'}
+                    shelfBooks={this.state.books.current}
+                  />
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
+                  <Shelf
+                    shelfTitle={'Want to Read'}
+                    shelfBooks={this.state.books.wantTo}
+                  />
 
+                  <Shelf
+                    shelfTitle={'Read'}
+                    shelfBooks={this.state.books.read}
+                  />
+              </div>
+              <div className="open-search">
+                <button onClick={this.goToSearch}>Add a book</button>
               </div>
             </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-                <Shelf
-                  shelfTitle={'Currently Reading'}
-                  shelfBooks={this.state.books.current}
-                />
+          </Route>
 
-                <Shelf
-                  shelfTitle={'Want to Read'}
-                  shelfBooks={this.state.books.wantTo}
-                />
+          <Route path="/search">
+            <div className="search-books">
+              <div className="search-books-bar">
+                <button className="close-search" onClick={this.goToHome}>Close</button>
+                <div className="search-books-input-wrapper">
+                  {/*
+                    NOTES: The search from BooksAPI is limited to a particular set of search terms.
+                    You can find these search terms here:
+                    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                <Shelf
-                  shelfTitle={'Read'}
-                  shelfBooks={this.state.books.read}
-                />
+                    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+                    you don't find a specific author or title. Every search is limited by search terms.
+                  */}
+                  <input type="text" placeholder="Search by title or author"/>
+
+                </div>
+              </div>
+              <div className="search-books-results">
+                <ol className="books-grid"></ol>
+              </div>
             </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-            </div>
-          </div>
-        )}
+          </Route>
+
+        </Switch>
       </div>
     )
   }
 }
 
-export default BooksApp
+export default withRouter(BooksApp);

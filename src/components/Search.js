@@ -1,14 +1,36 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
+import * as BooksAPI from '../BooksAPI'
+import Book from './Book'
 
 class Search extends Component {
   state = {
     searchString: '',
+    results: [],
   }
 
   updateSearch = (e) => {
     const newSearch = e.target.value;
     this.setState({searchString: newSearch});
+
+    BooksAPI.search(newSearch)
+      .then(data => {
+        if (data !== undefined && data.error === undefined) {
+          return data.map(book => {
+            return {
+              id: book.id,
+              title: book.title,
+              authors: book.authors,
+              backgroundUrl: `url("${book.imageLinks.thumbnail}")`,
+            };
+          })
+        } else {
+          return [];
+        }
+      })
+      .then(formattedData => {
+        this.setState({results: formattedData});
+      });
   }
 
   goToHome = () => {
@@ -37,9 +59,9 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {/**
-             * Show search results here.
-             */}
+            {this.state.results.map(book => (
+              <Book key={book.id} bookData={book} />
+            ))}
           </ol>
         </div>
       </div>

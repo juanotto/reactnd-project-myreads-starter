@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import noThumb from '../images/thumb_not.jpg'
 
 export default class Book extends Component {
   static propTypes = {
@@ -8,7 +9,9 @@ export default class Book extends Component {
 
   render() {
     const {title, authors, backgroundUrl} = this.props.bookData;
-    const wrappedBackgroundUrl = `url("${backgroundUrl}")`;
+    const wrappedBackgroundUrl = backgroundUrl?
+      `url("${backgroundUrl}")` :
+      `url("${noThumb}")`;
     return (
       <li>
         <div className="book">

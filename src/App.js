@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import Search from './components/Search'
 import Dashboard from './components/Dashboard'
 
@@ -22,4 +22,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default withRouter(BooksApp);
+export default BooksApp;

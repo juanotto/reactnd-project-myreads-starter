@@ -8,11 +8,12 @@ export default class Book extends Component {
 
   render() {
     const {title, authors, backgroundUrl} = this.props.bookData;
+    const wrappedBackgroundUrl = `url("${backgroundUrl}")`;
     return (
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: backgroundUrl }}></div>
+            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: wrappedBackgroundUrl }}></div>
             <div className="book-shelf-changer">
               <select>
                 <option value="move" disabled>Move to...</option>

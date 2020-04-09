@@ -21,7 +21,7 @@ class Search extends Component {
               id: book.id,
               title: book.title,
               authors: book.authors,
-              backgroundUrl: `url("${book.imageLinks.thumbnail}")`,
+              backgroundUrl: book.imageLinks? book.imageLinks.thumbnail : null,
             };
           })
         } else {

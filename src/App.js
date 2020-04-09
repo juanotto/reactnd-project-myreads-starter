@@ -49,10 +49,6 @@ class BooksApp extends React.Component {
     this.props.history.push('/search');
   }
 
-  goToHome = () => {
-    this.props.history.push('/');
-  }
-
   render() {
     return (
       <div className="app">

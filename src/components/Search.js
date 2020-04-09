@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom';
 
-export default class Search extends Component {
+class Search extends Component {
   state = {
     searchString: '',
   }
@@ -8,6 +9,10 @@ export default class Search extends Component {
   updateSearch = (e) => {
     const newSearch = e.target.value;
     this.setState({searchString: newSearch});
+  }
+
+  goToHome = () => {
+    this.props.history.push('/');
   }
 
   render() {
@@ -41,3 +46,5 @@ export default class Search extends Component {
     )
   }
 }
+
+export default withRouter(Search);

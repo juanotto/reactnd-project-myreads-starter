@@ -23,7 +23,9 @@ export default class Book extends Component {
           </div>
         </div>
         <div className="book-title">{title}</div>
-        <div className="book-authors">{authors}</div>
+        {authors &&
+          <div className="book-authors">{authors.join(', ')}</div>
+        }
       </div>
     )
   }

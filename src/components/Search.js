@@ -13,7 +13,10 @@ class Search extends Component {
     const newSearch = e.target.value;
     this.setState({searchString: newSearch});
 
-    BooksAPI.search(newSearch)
+    const formattedSearch = newSearch.trim()
+      .split(/[\s-,.]+/)
+      .join(' ')
+    BooksAPI.search(formattedSearch)
       .then(data => {
         if (data !== undefined && data.error === undefined) {
           return data.map(book => {

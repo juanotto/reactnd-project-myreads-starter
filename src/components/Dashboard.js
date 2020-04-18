@@ -5,19 +5,10 @@ import * as BooksAPI from '../BooksAPI'
 
 class Dashboard extends Component {
   state = {
-    books: {
-      currentlyReading: [],
-      wantToRead: [],
-      read: [],
-    },
+    books: []
   }
 
   componentDidMount() {
-    const bookData = {
-      currentlyReading: [],
-      wantToRead: [],
-      read: [],
-    };
     BooksAPI.getAll()
       .then(data => {
         return data.map(book => {
@@ -31,19 +22,19 @@ class Dashboard extends Component {
         })
       })
       .then(data => {
-        data.forEach(book => {
-          bookData[book.shelf].push(book);
-        });
-        this.setState({books: bookData});
+        this.setState({books: data});
       })
   }
-  
 
   goToSearch = () => {
     this.props.history.push('/search');
   }
 
   render() {
+    const currentlyReading = this.state.books.filter(b => b.shelf === 'currentlyReading');
+    const wantToRead = this.state.books.filter(b => b.shelf === 'wantToRead');
+    const read = this.state.books.filter(b => b.shelf === 'read');
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -52,17 +43,17 @@ class Dashboard extends Component {
         <div className="list-books-content">
             <Shelf
               shelfTitle={'Currently Reading'}
-              shelfBooks={this.state.books.currentlyReading}
+              shelfBooks={currentlyReading}
             />
 
             <Shelf
               shelfTitle={'Want to Read'}
-              shelfBooks={this.state.books.wantToRead}
+              shelfBooks={wantToRead}
             />
 
             <Shelf
               shelfTitle={'Read'}
-              shelfBooks={this.state.books.read}
+              shelfBooks={read}
             />
         </div>
         <div className="open-search">

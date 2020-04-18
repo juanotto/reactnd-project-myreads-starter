@@ -26,6 +26,19 @@ class Dashboard extends Component {
       })
   }
 
+  moveBook = (id, shelf) => {
+    console.log('From dashboard now')
+    console.log(`Book id ${id}`);
+    console.log(`Going to ${shelf}`);
+
+    const updatedBooks = this.state.books
+      .map(b => {
+        if (b.id === id) b.shelf = shelf;
+        return b;
+      });
+      this.setState({books: updatedBooks});
+  }
+
   goToSearch = () => {
     this.props.history.push('/search');
   }
@@ -44,16 +57,19 @@ class Dashboard extends Component {
             <Shelf
               shelfTitle={'Currently Reading'}
               shelfBooks={currentlyReading}
+              moveBook={this.moveBook}
             />
 
             <Shelf
               shelfTitle={'Want to Read'}
               shelfBooks={wantToRead}
+              moveBook={this.moveBook}
             />
 
             <Shelf
               shelfTitle={'Read'}
               shelfBooks={read}
+              moveBook={this.moveBook}
             />
         </div>
         <div className="open-search">

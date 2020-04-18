@@ -26,14 +26,11 @@ class Dashboard extends Component {
       })
   }
 
-  moveBook = (id, shelf) => {
-    console.log('From dashboard now')
-    console.log(`Book id ${id}`);
-    console.log(`Going to ${shelf}`);
-
+  moveBook = (book, shelf) => {
+    BooksAPI.update(book, shelf);
     const updatedBooks = this.state.books
       .map(b => {
-        if (b.id === id) b.shelf = shelf;
+        if (b.id === book.id) b.shelf = shelf;
         return b;
       });
       this.setState({books: updatedBooks});

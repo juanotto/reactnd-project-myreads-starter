@@ -9,7 +9,7 @@ export default class Book extends Component {
   }
 
   moveShelves = (event) => {
-    this.props.moveBook(this.props.bookData.id, event.target.value);
+    this.props.moveBook(this.props.bookData, event.target.value);
   }
 
   render() {

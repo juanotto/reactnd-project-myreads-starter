@@ -33,9 +33,7 @@ class BooksApp extends React.Component {
     const foundBook = this.state.books.find(b => b.id === book.id);
     const goingToNone = shelf === 'none';
     if (!foundBook) {
-      if (!goingToNone) {
-          this.setState({books: [...this.state.books, book]});
-      }
+        this.setState({books: [...this.state.books, book]});
     } else {
       if (goingToNone) {
         const updatedBooks = this.state.books

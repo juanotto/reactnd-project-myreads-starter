@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import * as BooksAPI from '../BooksAPI'
 import Book from './Book'
 
 class Search extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    moveBook: PropTypes.func.isRequired
+  }
+
   state = {
     searchString: '',
     results: [],
@@ -13,20 +19,14 @@ class Search extends Component {
     const newSearch = e.target.value;
     this.setState({searchString: newSearch});
 
-    const formattedSearch = newSearch.trim()
-      .split(/[\s-,.]+/)
-      .join(' ');
+    const formattedSearch = newSearch.trim().split(/[\s-,.]+/).join(' ');
 
     BooksAPI.search(formattedSearch)
       .then(data => {
         if (data !== undefined && data.error === undefined) {
           return data.map(book => {
-            const bookInShelf = this.props.books.filter(b => b.id === book.id);
-            if (bookInShelf.length > 1) {
-              console.warn('Filtering by id should give one element at most', bookInShelf);
-            }
-            const shelf = bookInShelf.length === 0? 'none'
-              : bookInShelf[0].shelf;
+            const bookInShelf = this.props.books.find(b => b.id === book.id);
+            const shelf = !bookInShelf? 'none' : bookInShelf.shelf;
             return {
               id: book.id,
               title: book.title,

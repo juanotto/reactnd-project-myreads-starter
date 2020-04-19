@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import Shelf from './Shelf';
 
 class Dashboard extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    moveBook: PropTypes.func.isRequired
+  }
+
   goToSearch = () => {
     this.props.history.push('/search');
   }

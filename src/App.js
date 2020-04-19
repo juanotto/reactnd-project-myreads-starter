@@ -31,21 +31,27 @@ class BooksApp extends React.Component {
   moveBook = (book, shelf) => {
     BooksAPI.update(book, shelf);
     const foundBook = this.state.books.find(b => b.id === book.id);
-    const goingToNone = shelf === 'none';
+    const removeBook = shelf === 'none';
     if (!foundBook) {
-        this.setState({books: [...this.state.books, book]});
+      this.setState((prevState, props) => {
+        return { books: [...prevState.books, book] };
+      });
     } else {
-      if (goingToNone) {
-        const updatedBooks = this.state.books
-          .filter(b => b.id !== book.id);
-          this.setState({books: updatedBooks});
+      if (removeBook) {
+        this.setState((prevState, props) => {
+          const updatedBooks = prevState.books
+            .filter(b => b.id !== book.id);
+          return { books: updatedBooks };
+        });
       } else {
-        const updatedBooks = this.state.books
-          .map(b => {
-            if (b.id === book.id) b.shelf = shelf;
-            return b;
-          });
-          this.setState({books: updatedBooks});
+        this.setState((prevState, props) => {
+          const updatedBooks = this.state.books
+            .map(b => {
+              if (b.id === book.id) b.shelf = shelf;
+              return b;
+            });
+          return { books: updatedBooks };
+        });
       }
     }
   }

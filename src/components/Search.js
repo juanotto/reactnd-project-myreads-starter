@@ -15,16 +15,24 @@ class Search extends Component {
 
     const formattedSearch = newSearch.trim()
       .split(/[\s-,.]+/)
-      .join(' ')
+      .join(' ');
+
     BooksAPI.search(formattedSearch)
       .then(data => {
         if (data !== undefined && data.error === undefined) {
           return data.map(book => {
+            const bookInShelf = this.props.books.filter(b => b.id === book.id);
+            if (bookInShelf.length > 1) {
+              console.warn('Filtering by id should give one element at most', bookInShelf);
+            }
+            const shelf = bookInShelf.length === 0? 'none'
+              : bookInShelf[0].shelf;
             return {
               id: book.id,
               title: book.title,
               authors: book.authors,
               backgroundUrl: book.imageLinks? book.imageLinks.thumbnail : null,
+              shelf: shelf
             };
           })
         } else {
@@ -38,6 +46,15 @@ class Search extends Component {
 
   goToHome = () => {
     this.props.history.push('/');
+  }
+
+  updateBookResultAndMove = (book, shelf) => {
+    this.props.moveBook(book, shelf);
+    const updatedResults = this.state.results.map(b => {
+      if (b.id === book.id) b.shelf = shelf;
+      return b;
+    });
+    this.setState({results: updatedResults});
   }
 
   render() {
@@ -63,7 +80,7 @@ class Search extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {this.state.results.map(book => (
-              <Book key={book.id} bookData={book} />
+              <Book key={book.id} bookData={book} moveBook={this.updateBookResultAndMove} />
             ))}
           </ol>
         </div>

@@ -5,7 +5,7 @@ import noThumb from '../images/thumb_not.jpg'
 export default class Book extends Component {
   static propTypes = {
     bookData: PropTypes.object.isRequired,
-    moveBook: PropTypes.func
+    moveBook: PropTypes.func.isRequired
   }
 
   moveShelves = (event) => {

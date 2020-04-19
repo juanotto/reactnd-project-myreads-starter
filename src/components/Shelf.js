@@ -6,7 +6,7 @@ export default class Shelf extends Component {
   static propTypes = {
     shelfTitle: PropTypes.string.isRequired,
     shelfBooks: PropTypes.array.isRequired,
-    moveBook: PropTypes.func
+    moveBook: PropTypes.func.isRequired
   }
 
   render() {
@@ -16,7 +16,7 @@ export default class Shelf extends Component {
         <div className="bookshelf-books">
           <ol className="books-grid">
             {this.props.shelfBooks.map(book => (
-              <Book key={book.id} bookData={book} moveBook={this.props.moveBook}/>
+              <Book key={book.id} bookData={book} moveBook={this.props.moveBook} />
             ))}
           </ol>
         </div>
